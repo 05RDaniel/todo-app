@@ -1,34 +1,61 @@
-import { LoginForm } from "@/components/login-form";
+import { requireAuth } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+import { sortTasks } from "@/lib/task-sort";
+import Link from "next/link";
 
-export default function Home() {
+export default async function Home() {
+  const user = await requireAuth();
+
+  const allTasks = await prisma.task.findMany({
+    where: { userId: user.id, parentId: null },
+  });
+
+  const sortedAllTasks = sortTasks(allTasks);
+
+  const completedTasks = sortedAllTasks.filter((task) => task.status === "DONE").length;
+  const pendingTasks = sortedAllTasks.filter((task) => task.status === "PENDING").length;
+  const inProgressTasks = sortedAllTasks.filter((task) => task.status === "IN_PROGRESS").length;
+
   return (
-    <div className="relative min-h-screen bg-slate-950 text-white">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-sky-500/30 via-slate-950/40 to-transparent blur-3xl" />
-      <main className="relative mx-auto flex min-h-screen w-full max-w-6xl items-center px-4 py-16 sm:px-6 lg:px-12">
-        <div className="flex w-full flex-col gap-12 lg:flex-row lg:items-center">
-          <div className="flex-1 space-y-6 text-center lg:text-left">
+    <div className="relative h-screen overflow-hidden bg-slate-950 text-white">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-sky-500/20 via-slate-900/20 to-transparent blur-3xl" />
+      <main className="relative mx-auto flex h-full w-full max-w-7xl flex-col justify-center gap-8 px-4 py-8 sm:px-6 lg:px-10 pt-[200px] md:pt-[128px]">
+        <section className="flex flex-col gap-6">
+          <div>
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-400">
-              Welcome back
+              Dashboard
             </p>
-            <div className="space-y-4">
-              <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
-                Sign in to access your tasks
-              </h1>
-              <p className="text-lg text-slate-300">
-                Use the demo account or wire this starter to your auth provider
-                to unlock the Orbit Tasks workspace. Everything adapts to any
-                screen size, so you can keep shipping from anywhere.
-              </p>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <StatCard label="Teams onboarded" value="12+" />
-              <StatCard label="Tasks tracked" value="4.3k" />
-            </div>
+            <h1 className="mt-2 text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+              Welcome back, {user.username}!
+            </h1>
+            <p className="mt-4 max-w-2xl text-lg text-slate-300">
+              Here&apos;s an overview of your tasks. Create new ones, track progress,
+              and stay organized.
+            </p>
           </div>
-          <div className="flex flex-1 items-center justify-center lg:justify-end">
-            <LoginForm />
+
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <StatCard label="Total tasks" value={sortedAllTasks.length} />
+            <StatCard label="Pending" value={pendingTasks} />
+            <StatCard label="In progress" value={inProgressTasks} />
+            <StatCard label="Completed" value={completedTasks} />
           </div>
-        </div>
+
+          <div className="flex flex-wrap gap-4 mt-4">
+            <Link
+              href="/tasks"
+              className="rounded-xl bg-gradient-to-r from-sky-500 to-sky-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-sky-500/20 transition-all hover:from-sky-400 hover:to-sky-500 hover:shadow-xl hover:shadow-sky-500/30"
+            >
+              My Tasks
+            </Link>
+            <Link
+              href="/tasks/new"
+              className="rounded-xl border border-sky-500/50 bg-sky-500/10 px-6 py-3 text-sm font-semibold text-sky-300 transition-colors hover:bg-sky-500/20"
+            >
+              New Task
+            </Link>
+          </div>
+        </section>
       </main>
     </div>
   );
@@ -36,16 +63,16 @@ export default function Home() {
 
 type StatCardProps = {
   label: string;
-  value: string;
+  value: number;
 };
 
 function StatCard({ label, value }: StatCardProps) {
   return (
-    <div className="rounded-3xl border border-slate-800/70 bg-slate-900/40 p-4 text-left shadow-xl shadow-black/20 backdrop-blur">
+    <div className="rounded-3xl border border-slate-800/70 bg-slate-900/40 p-5 shadow-xl shadow-black/20 backdrop-blur">
       <p className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500">
         {label}
       </p>
-      <p className="mt-2 text-2xl font-semibold text-white">{value}</p>
+      <p className="mt-3 text-3xl font-semibold text-white">{value}</p>
     </div>
   );
 }
