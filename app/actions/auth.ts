@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
-type LoginState = {
+export type LoginState = {
   error?: string;
 };
 

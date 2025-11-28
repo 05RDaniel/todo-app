@@ -2,23 +2,20 @@
 
 import { useActionState } from "react";
 import { SubmitButton } from "@/components/submit-button";
-
-type LoginState = {
-  error?: string;
-};
+import type { LoginState } from "@/app/actions/auth";
 
 type LoginFormClientProps = {
   loginAction: (
-    state: LoginState | undefined,
-    formData: FormData,
+    state: LoginState | undefined | void,
+    formData: FormData | null,
   ) => Promise<LoginState | void>;
+  initialState: LoginState;
 };
 
-const initialState: LoginState = {
-  error: "",
-};
-
-export function LoginFormClient({ loginAction }: LoginFormClientProps) {
+export function LoginFormClient({
+  loginAction,
+  initialState,
+}: LoginFormClientProps) {
   const [state, formAction] = useActionState(loginAction, initialState);
 
   return (
