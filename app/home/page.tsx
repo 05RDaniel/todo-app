@@ -2,11 +2,12 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 type HomePageProps = {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-export default function HomePage({ searchParams }: HomePageProps) {
-  const userParam = searchParams.user;
+export default async function HomePage({ searchParams }: HomePageProps) {
+  const params = await searchParams;
+  const userParam = params.user;
   const username = Array.isArray(userParam) ? userParam[0] : userParam;
 
   if (!username) {
