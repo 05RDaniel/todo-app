@@ -9,7 +9,7 @@ type LoginState = {
 
 type LoginFormClientProps = {
   loginAction: (
-    state: LoginState,
+    state: LoginState | undefined,
     formData: FormData,
   ) => Promise<LoginState | void>;
 };
