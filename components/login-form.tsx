@@ -8,6 +8,8 @@ export function LoginForm() {
     prevState: LoginState | undefined | void,
     formData: FormData | null,
   ) {
+    "use server";
+
     if (!formData) {
       return prevState ?? initialState;
     }
