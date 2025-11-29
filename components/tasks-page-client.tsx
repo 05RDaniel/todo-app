@@ -1,23 +1,27 @@
 "use client";
 
-import { useState } from "react";
-import { Task } from "@prisma/client";
+import { useState, useCallback, memo } from "react";
 import { TaskFilters } from "./task-filters";
 import { TaskList } from "./task-list";
 import Link from "next/link";
+import { TaskWithParent } from "@/types";
 
 type TasksPageClientProps = {
-  tasks: Task[];
+  tasks: TaskWithParent[];
 };
 
-export function TasksPageClient({ tasks }: TasksPageClientProps) {
-  const [filteredTasks, setFilteredTasks] = useState<Task[]>(tasks);
+export const TasksPageClient = memo(function TasksPageClient({ tasks }: TasksPageClientProps) {
+  const [filteredTasks, setFilteredTasks] = useState<TaskWithParent[]>(tasks);
+
+  const handleFilteredTasksChange = useCallback((filtered: TaskWithParent[]) => {
+    setFilteredTasks(filtered);
+  }, []);
 
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex-1">
-          <TaskFilters tasks={tasks} onFilteredTasksChange={setFilteredTasks} />
+          <TaskFilters tasks={tasks} onFilteredTasksChange={handleFilteredTasksChange} />
         </div>
         <div className="sm:ml-4 flex-shrink-0">
           <Link
@@ -35,5 +39,5 @@ export function TasksPageClient({ tasks }: TasksPageClientProps) {
       </div>
     </div>
   );
-}
+});
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { deleteAccountAction, type DeleteAccountState } from "@/app/actions/auth";
 import { useToast } from "./toast-provider";
 import { SubmitButton } from "./submit-button";

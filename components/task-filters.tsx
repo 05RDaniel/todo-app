@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
-import { Task } from "@prisma/client";
+import { useState, useMemo, useEffect, memo } from "react";
+import { TaskWithParent } from "@/types";
 
 type TaskFiltersProps = {
-  tasks: Task[];
-  onFilteredTasksChange: (tasks: Task[]) => void;
+  tasks: TaskWithParent[];
+  onFilteredTasksChange: (tasks: TaskWithParent[]) => void;
 };
 
-export function TaskFilters({ tasks, onFilteredTasksChange }: TaskFiltersProps) {
+export const TaskFilters = memo(function TaskFilters({ tasks, onFilteredTasksChange }: TaskFiltersProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<"ALL" | "PENDING" | "IN_PROGRESS" | "DONE">(
     "ALL",
@@ -44,13 +44,14 @@ export function TaskFilters({ tasks, onFilteredTasksChange }: TaskFiltersProps) 
   // Notificar cambios a el componente padre
   useEffect(() => {
     onFilteredTasksChange(filteredTasks);
-  }, [filteredTasks, onFilteredTasksChange]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filteredTasks]);
 
   const resultCount = filteredTasks.length;
   const hasActiveFilters = searchQuery.trim() || statusFilter !== "ALL" || priorityFilter !== "ALL";
 
   return (
-    <div className="rounded-xl border border-slate-800/70 bg-gradient-to-br from-slate-900/60 to-slate-900/40 p-3 backdrop-blur-xl shadow-xl">
+    <div className="rounded-2xl border border-slate-800/50 bg-gradient-to-br from-slate-900/70 to-slate-950/70 p-4 backdrop-blur-sm shadow-xl">
       <div className="flex items-center justify-between mb-2">
         <h3 className="text-[10px] font-semibold uppercase tracking-[0.25em] text-slate-400">
           Search & Filters
@@ -69,7 +70,7 @@ export function TaskFilters({ tasks, onFilteredTasksChange }: TaskFiltersProps) 
         )}
       </div>
 
-      <div className="grid gap-2 sm:grid-cols-[1fr_auto_auto] sm:items-center">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
         {/* Búsqueda */}
         <div>
           <label htmlFor="search" className="sr-only">
@@ -101,7 +102,7 @@ export function TaskFilters({ tasks, onFilteredTasksChange }: TaskFiltersProps) 
         </div>
 
         {/* Filtro por estado */}
-        <div className="sm:ml-2">
+        <div className="flex-shrink-0">
           <label className="sr-only">Status</label>
           <div className="flex gap-0.5 rounded-lg border border-slate-800/70 bg-slate-950/60 p-0.5">
             {[
@@ -116,7 +117,7 @@ export function TaskFilters({ tasks, onFilteredTasksChange }: TaskFiltersProps) 
                   key={option.value}
                   type="button"
                   onClick={() => setStatusFilter(option.value as typeof statusFilter)}
-                  className={`rounded-md px-1.5 py-1 text-[9px] font-semibold uppercase tracking-wide transition-all ${
+                  className={`rounded-md px-2 py-1 text-[9px] font-semibold uppercase tracking-wide transition-all sm:px-1.5 ${
                     isSelected
                       ? "bg-sky-500/20 text-sky-300"
                       : "text-slate-400 hover:bg-slate-900/80 hover:text-slate-300"
@@ -130,7 +131,7 @@ export function TaskFilters({ tasks, onFilteredTasksChange }: TaskFiltersProps) 
         </div>
 
         {/* Filtro por prioridad */}
-        <div className="sm:ml-2">
+        <div className="flex-shrink-0">
           <label className="sr-only">Priority</label>
           <div className="flex gap-0.5 rounded-lg border border-slate-800/70 bg-slate-950/60 p-0.5">
             {[
@@ -145,7 +146,7 @@ export function TaskFilters({ tasks, onFilteredTasksChange }: TaskFiltersProps) 
                   key={option.value}
                   type="button"
                   onClick={() => setPriorityFilter(option.value as typeof priorityFilter)}
-                  className={`rounded-md px-1.5 py-1 text-[10px] font-bold transition-all ${
+                  className={`rounded-md px-2 py-1 text-[10px] font-bold transition-all sm:px-1.5 ${
                     isSelected
                       ? option.value === "ALL"
                         ? "bg-sky-500/20 text-sky-300"
@@ -171,5 +172,4 @@ export function TaskFilters({ tasks, onFilteredTasksChange }: TaskFiltersProps) 
       )}
     </div>
   );
-}
-
+});

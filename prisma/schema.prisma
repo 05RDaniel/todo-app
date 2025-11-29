@@ -26,6 +26,12 @@ model Task {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([userId, status])
+  @@index([userId, priority])
+  @@index([userId, dueDate])
+  @@index([parentId])
+  @@index([userId, createdAt])
 }
 
 model User {

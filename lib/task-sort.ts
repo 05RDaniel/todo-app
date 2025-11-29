@@ -12,7 +12,7 @@ const statusOrder = {
   DONE: 1,
 } as const;
 
-export function sortTasks(tasks: Task[]): Task[] {
+export function sortTasks<T extends Task>(tasks: T[]): T[] {
   return [...tasks].sort((a, b) => {
     // 1. Ordenar primero por estado: IN_PROGRESS > PENDING > DONE
     const aStatus = statusOrder[a.status];

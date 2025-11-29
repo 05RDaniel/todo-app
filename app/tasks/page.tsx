@@ -2,15 +2,41 @@ import { requireAuth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { sortTasks } from "@/lib/task-sort";
 import { TasksPageClient } from "@/components/tasks-page-client";
+import { TaskWithParent } from "@/types";
 
 export default async function TasksPage() {
   const user = await requireAuth();
 
   const tasksRaw = await prisma.task.findMany({
-    where: { userId: user.id, parentId: null },
+    where: { userId: user.id },
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      status: true,
+      priority: true,
+      dueDate: true,
+      completedAt: true,
+      createdAt: true,
+      updatedAt: true,
+      userId: true,
+      parentId: true,
+      parent: {
+        select: {
+          id: true,
+          title: true,
+        },
+      },
+    },
+    orderBy: [
+      { status: "asc" },
+      { dueDate: { sort: "asc", nulls: "last" } },
+      { priority: "desc" },
+      { createdAt: "asc" },
+    ],
   });
 
-  const tasks = sortTasks(tasksRaw);
+  const tasks = sortTasks(tasksRaw) as TaskWithParent[];
 
   return (
     <div className="relative min-h-screen bg-slate-950 text-white">

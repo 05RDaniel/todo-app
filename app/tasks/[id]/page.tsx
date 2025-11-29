@@ -52,13 +52,13 @@ export default async function TaskDetailPage({ params }: TaskDetailPageProps) {
           </Link>
         </header>
 
-        <section className="grid gap-8 lg:grid-cols-[minmax(260px,0.9fr)_1.1fr]">
+        <section className="grid gap-6 sm:gap-8 lg:grid-cols-[minmax(260px,0.9fr)_1.1fr]">
           <div className="space-y-6">
             <TaskDetailForm task={task} />
             <SubtasksSection taskId={task.id} subtasks={task.subtasks} />
           </div>
 
-          <aside className="space-y-4 rounded-3xl border border-slate-800/70 bg-slate-900/30 p-6 text-sm text-slate-300 shadow-xl shadow-black/20 backdrop-blur">
+          <aside className="space-y-4 rounded-3xl border border-slate-800/70 bg-slate-900/30 p-4 sm:p-6 text-sm text-slate-300 shadow-xl shadow-black/20 backdrop-blur">
             <h2 className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
               At a glance
             </h2>

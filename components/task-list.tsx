@@ -1,8 +1,8 @@
-import { Task } from "@prisma/client";
 import { TaskListClient } from "./task-list-client";
+import { TaskWithParent } from "@/types";
 
 type TaskListProps = {
-  tasks: Task[];
+  tasks: TaskWithParent[];
 };
 
 export function TaskList({ tasks }: TaskListProps) {
