@@ -1,6 +1,5 @@
 import { requireAuth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { sortTasks } from "@/lib/task-sort";
 import Link from "next/link";
 
 export default async function Home() {
@@ -14,11 +13,9 @@ export default async function Home() {
     },
   });
 
-  const sortedAllTasks = sortTasks(allTasks);
-
-  const completedTasks = sortedAllTasks.filter((task) => task.status === "DONE").length;
-  const pendingTasks = sortedAllTasks.filter((task) => task.status === "PENDING").length;
-  const inProgressTasks = sortedAllTasks.filter((task) => task.status === "IN_PROGRESS").length;
+  const completedTasks = allTasks.filter((task) => task.status === "DONE").length;
+  const pendingTasks = allTasks.filter((task) => task.status === "PENDING").length;
+  const inProgressTasks = allTasks.filter((task) => task.status === "IN_PROGRESS").length;
 
   return (
     <div className="relative min-h-screen bg-slate-950 text-white">
@@ -42,7 +39,7 @@ export default async function Home() {
           </div>
 
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            <StatCard label="Total tasks" value={sortedAllTasks.length} icon="📋" />
+            <StatCard label="Total tasks" value={allTasks.length} icon="📋" />
             <StatCard label="Pending" value={pendingTasks} icon="⏳" />
             <StatCard label="In progress" value={inProgressTasks} icon="🚀" />
             <StatCard label="Completed" value={completedTasks} icon="✅" />
