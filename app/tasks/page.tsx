@@ -7,8 +7,9 @@ import { TaskWithParent } from "@/types";
 export default async function TasksPage() {
   const user = await requireAuth();
 
+  // Fetch tasks with parent info
   const tasksRaw = await prisma.task.findMany({
-    where: { userId: user.id },
+    where: { userId: user.id, parentId: null }, // Only fetch main tasks, not subtasks
     select: {
       id: true,
       title: true,
@@ -28,14 +29,9 @@ export default async function TasksPage() {
         },
       },
     },
-    orderBy: [
-      { status: "asc" },
-      { dueDate: { sort: "asc", nulls: "last" } },
-      { priority: "desc" },
-      { createdAt: "asc" },
-    ],
   });
 
+  // Sort tasks using client-side sorting (more flexible than DB ordering)
   const tasks = sortTasks(tasksRaw) as TaskWithParent[];
 
   return (

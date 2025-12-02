@@ -2,7 +2,7 @@
 
 import { useState, useCallback, memo } from "react";
 import { TaskFilters } from "./task-filters";
-import { TaskList } from "./task-list";
+import { TaskListClient } from "./task-list-client";
 import Link from "next/link";
 import { TaskWithParent } from "@/types";
 
@@ -35,7 +35,7 @@ export const TasksPageClient = memo(function TasksPageClient({ tasks }: TasksPag
 
       <div className="space-y-4">
         <h2 className="text-lg font-semibold text-white">Tasks list</h2>
-        <TaskList tasks={filteredTasks} />
+        <TaskListClient tasks={filteredTasks} />
       </div>
     </div>
   );

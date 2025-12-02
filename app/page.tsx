@@ -5,17 +5,13 @@ import Link from "next/link";
 export default async function Home() {
   const user = await requireAuth();
 
-  const allTasks = await prisma.task.findMany({
-    where: { userId: user.id },
-    select: {
-      id: true,
-      status: true,
-    },
-  });
-
-  const completedTasks = allTasks.filter((task) => task.status === "DONE").length;
-  const pendingTasks = allTasks.filter((task) => task.status === "PENDING").length;
-  const inProgressTasks = allTasks.filter((task) => task.status === "IN_PROGRESS").length;
+  // Optimizar: usar agregaciones en lugar de cargar todos los registros
+  const [allTasksCount, completedTasks, pendingTasks, inProgressTasks] = await Promise.all([
+    prisma.task.count({ where: { userId: user.id } }),
+    prisma.task.count({ where: { userId: user.id, status: "DONE" } }),
+    prisma.task.count({ where: { userId: user.id, status: "PENDING" } }),
+    prisma.task.count({ where: { userId: user.id, status: "IN_PROGRESS" } }),
+  ]);
 
   return (
     <div className="relative min-h-screen bg-slate-950 text-white">
@@ -39,7 +35,7 @@ export default async function Home() {
           </div>
 
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            <StatCard label="Total tasks" value={allTasks.length} icon="📋" />
+            <StatCard label="Total tasks" value={allTasksCount} icon="📋" />
             <StatCard label="Pending" value={pendingTasks} icon="⏳" />
             <StatCard label="In progress" value={inProgressTasks} icon="🚀" />
             <StatCard label="Completed" value={completedTasks} icon="✅" />

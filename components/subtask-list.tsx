@@ -1,7 +1,7 @@
 "use client";
 
 import { Task } from "@prisma/client";
-import { deleteSubtaskAction, toggleTaskStatusAction } from "@/app/actions/tasks";
+import { toggleTaskStatusAction, deleteTaskAction } from "@/app/actions/tasks";
 import { useToast } from "./toast-provider";
 import { SubmitButton } from "./submit-button";
 
@@ -26,7 +26,7 @@ export function SubtaskList({ subtasks }: SubtaskListProps) {
       return;
     }
     try {
-      await deleteSubtaskAction(formData);
+      await deleteTaskAction(formData);
       showSuccess("Subtask deleted successfully");
     } catch (error) {
       showError(error instanceof Error ? error.message : "Failed to delete subtask");
@@ -97,7 +97,7 @@ export function SubtaskList({ subtasks }: SubtaskListProps) {
             </div>
 
             <form action={handleDelete} className="flex-shrink-0">
-              <input type="hidden" name="subtaskId" value={subtask.id} />
+              <input type="hidden" name="taskId" value={subtask.id} />
               <SubmitButton
                 pendingLabel="..."
                 className="h-5 w-5 rounded-full bg-rose-500/20 text-rose-300 transition-all hover:bg-rose-500/30 hover:text-rose-200 text-xs font-bold flex items-center justify-center"
