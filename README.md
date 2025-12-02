@@ -1,94 +1,125 @@
-## Orbit Tasks
+# Orbit Tasks - Web Application
 
-A batteries-included starter for a to-do list web app powered by:
+Aplicación web moderna de gestión de tareas construida con Next.js, TypeScript, Prisma y PostgreSQL.
 
-- **Next.js 16 (App Router)** with React Server Components and Server Actions
-- **TypeScript** and modern ESLint config
-- **Tailwind CSS v4** with a glassmorphism-inspired UI
-- **Prisma ORM** talking to **PostgreSQL**
+## 🚀 Características
 
-Everything you need to start shipping task management features—forms, server mutations, list rendering, and a schema that can grow with your product.
+- ✅ Gestión completa de tareas (crear, editar, eliminar)
+- 📋 Subtareas para organizar mejor tus proyectos
+- 🎯 Prioridades (Baja, Media, Alta)
+- 📅 Fechas de vencimiento
+- 🔄 Estados de tarea (Pendiente, En Progreso, Completada)
+- 👤 Sistema de autenticación y perfiles de usuario
+- 🎨 Interfaz moderna con Tailwind CSS v4
+- 📱 Diseño responsive
 
----
+## 🛠️ Tecnologías
 
-## Project Structure
+- **Framework**: Next.js 16 (App Router)
+- **Lenguaje**: TypeScript
+- **Base de datos**: PostgreSQL con Prisma ORM
+- **Estilos**: Tailwind CSS v4
+- **Autenticación**: Session-based con bcrypt
 
-- `app/` – App Router pages, layouts, and styling
-- `components/` – Reusable UI pieces, including a server-action aware submit button
-- `app/actions/` – Server actions for creating, toggling, and deleting tasks
-- `lib/prisma.ts` – Prisma client singleton
-- `prisma/schema.prisma` – Task data model and enums
+## 📋 Requisitos Previos
 
----
+- Node.js 20+ 
+- PostgreSQL
+- npm o yarn
 
-## Prerequisites
+## 🔧 Instalación
 
-- Node.js 18.18+
-- PostgreSQL database (local Docker container works great)
+1. Clona el repositorio:
+```bash
+git clone <repository-url>
+cd todo-app
+```
 
----
+2. Instala las dependencias:
+```bash
+npm install
+```
 
-## Setup
+3. Configura las variables de entorno:
+```bash
+cp env.example .env
+```
 
-1. **Install dependencies**
+Edita `.env` y configura:
+```env
+DATABASE_URL="postgresql://usuario:password@localhost:5432/todo_app"
+```
 
-   ```bash
-   npm install
-   ```
+4. Configura la base de datos:
+```bash
+npx prisma generate
+npx prisma db push
+```
 
-2. **Configure environment variables**
+5. Inicia el servidor de desarrollo:
+```bash
+npm run dev
+```
 
-   ```bash
-   cp env.example .env
-   # Update DATABASE_URL with your credentials
-   ```
+La aplicación estará disponible en [http://localhost:3000](http://localhost:3000)
 
-3. **Apply the Prisma schema**
+## 📝 Scripts Disponibles
 
-   ```bash
-   npm run db:migrate     # generates + applies migrations locally
-   # or npm run db:push   # for prototyping without migrations
-   ```
+- `npm run dev` - Inicia el servidor de desarrollo
+- `npm run build` - Construye la aplicación para producción
+- `npm start` - Inicia el servidor de producción
+- `npm run lint` - Ejecuta el linter
+- `npx prisma studio` - Abre Prisma Studio para gestionar la base de datos
 
-4. **Seed demo user (optional)**
+## 🗂️ Estructura del Proyecto
 
-   The SQL migration inserts `dronkus / d@example.com / 1234`. To reseed manually run:
+```
+todo-app/
+├── app/              # Rutas y páginas (App Router)
+├── components/       # Componentes React reutilizables
+├── lib/             # Utilidades y lógica de negocio
+├── prisma/          # Esquema y migraciones de Prisma
+└── types/           # Definiciones de tipos TypeScript
+```
 
-   ```bash
-   npx prisma db execute --file prisma/migrations/202511281230_add_user_table/migration.sql --schema prisma/schema.prisma
-   ```
+## 🔐 Autenticación
 
-5. **Run the dev server**
+La aplicación utiliza autenticación basada en sesiones. Los usuarios pueden:
+- Registrarse con email y contraseña
+- Iniciar sesión
+- Actualizar su perfil
+- Cambiar su contraseña
+- Eliminar su cuenta
 
-   ```bash
-   npm run dev
-   ```
+## 📦 Base de Datos
 
-Visit `http://localhost:3000` to see the dashboard and start creating tasks.
+El esquema de la base de datos incluye:
+- **Users**: Información de usuarios
+- **Tasks**: Tareas con relaciones a usuarios y subtareas
 
----
+Las migraciones de Prisma están en `prisma/migrations/`.
 
-## NPM Scripts
+## 🚀 Despliegue
 
-| Script               | Description                             |
-| -------------------- | --------------------------------------- |
-| `npm run dev`        | Start Next.js in dev mode with hot reload |
-| `npm run build`      | Production build                        |
-| `npm run start`      | Run the compiled app                    |
-| `npm run lint`       | ESLint                                  |
-| `npm run db:push`    | `prisma db push`                        |
-| `npm run db:migrate` | `prisma migrate dev`                    |
-| `npm run db:studio`  | Open Prisma Studio UI                   |
-| `npm run db:generate`| Regenerate Prisma Client                |
+Para desplegar en producción:
 
-> Additional Prisma commands are defined in `package.json`.
+1. Construye la aplicación:
+```bash
+npm run build
+```
 
----
+2. Configura las variables de entorno en tu plataforma de hosting
 
-## Next Steps
+3. Ejecuta las migraciones:
+```bash
+npx prisma migrate deploy
+```
 
-- Swap the demo login redirect for real session management (Auth.js, Clerk, etc.)
-- Extend the `/home` page to list actual tasks from the Prisma layer
-- Deploy to Vercel or your preferred host when ready
+4. Inicia el servidor:
+```bash
+npm start
+```
 
-Happy building! 🚀
+## 📄 Licencia
+
+Este proyecto es privado.
