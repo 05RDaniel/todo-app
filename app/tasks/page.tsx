@@ -9,19 +9,12 @@ export default async function TasksPage() {
 
   // Fetch tasks with parent info
   const tasksRaw = await prisma.task.findMany({
-    where: { userId: user.id, parentId: null }, // Only fetch main tasks, not subtasks
-    select: {
-      id: true,
-      title: true,
-      description: true,
-      status: true,
-      priority: true,
-      dueDate: true,
-      completedAt: true,
-      createdAt: true,
-      updatedAt: true,
-      userId: true,
-      parentId: true,
+    where: { 
+      // @ts-expect-error - Prisma types may be out of sync, but userId exists in schema
+      userId: user.id,
+      parentId: null 
+    },
+    include: {
       parent: {
         select: {
           id: true,

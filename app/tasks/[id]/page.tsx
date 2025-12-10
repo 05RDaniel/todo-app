@@ -76,7 +76,7 @@ export default async function TaskDetailPage({ params }: TaskDetailPageProps) {
               <p>
                 <span className="text-slate-500">Created:</span>{" "}
                 <span>
-                  {new Date(task.createdAt).toLocaleString(undefined, {
+                  {new Date(task.createdAt).toLocaleString("en-US", {
                     month: "short",
                     day: "numeric",
                     hour: "2-digit",
@@ -88,7 +88,7 @@ export default async function TaskDetailPage({ params }: TaskDetailPageProps) {
                 <span className="text-slate-500">Due:</span>{" "}
                 <span>
                   {task.dueDate
-                    ? new Date(task.dueDate).toLocaleDateString()
+                    ? new Date(task.dueDate).toLocaleDateString("en-US")
                     : "Not set"}
                 </span>
               </p>

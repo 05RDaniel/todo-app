@@ -33,7 +33,7 @@ export function ProfileContent({ user }: ProfileContentProps) {
           <div>
             <span className="text-slate-500">Member since:</span>{" "}
             <span>
-              {new Date(user.createdAt).toLocaleDateString(undefined, {
+              {new Date(user.createdAt).toLocaleDateString("en-US", {
                 month: "long",
                 year: "numeric",
               })}

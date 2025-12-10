@@ -311,7 +311,8 @@ export const TaskListClient = memo(function TaskListClient({ tasks }: TaskListCl
 
 function formatDate(date: Date | string) {
   const normalized = typeof date === "string" ? new Date(date) : date;
-  return normalized.toLocaleDateString(undefined, {
+  // Use a fixed locale to ensure consistent formatting between server and client
+  return normalized.toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
   });
