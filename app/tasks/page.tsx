@@ -10,7 +10,6 @@ export default async function TasksPage() {
   // Fetch tasks with parent info
   const tasksRaw = await prisma.task.findMany({
     where: { 
-      // @ts-expect-error - Prisma types may be out of sync, but userId exists in schema
       userId: user.id,
       parentId: null 
     },

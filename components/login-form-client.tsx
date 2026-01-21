@@ -7,9 +7,9 @@ import Link from "next/link";
 
 type LoginFormClientProps = {
   loginAction: (
-    state: LoginState | undefined | void,
-    formData: FormData | null,
-  ) => Promise<LoginState>;
+    prevState: LoginState | undefined | void,
+    formData: FormData,
+  ) => Promise<LoginState | void>;
   initialState: LoginState;
 };
 

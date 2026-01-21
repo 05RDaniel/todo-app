@@ -38,7 +38,7 @@ export async function GET() {
       },
       orderBy: [
         { status: "asc" },
-        { dueDate: { sort: "asc", nulls: "last" } },
+        { dueDate: "asc" },
         { priority: "desc" },
         { createdAt: "asc" },
       ],

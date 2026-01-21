@@ -42,7 +42,7 @@ export async function GET(
         subtasks: {
           orderBy: [
             { status: "asc" },
-            { dueDate: { sort: "asc", nulls: "last" } },
+            { dueDate: "asc" },
             { priority: "desc" },
             { createdAt: "asc" },
           ],

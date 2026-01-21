@@ -7,8 +7,8 @@ import Link from "next/link";
 
 type RegisterFormClientProps = {
   registerAction: (
-    state: RegisterState | undefined | void,
-    formData: FormData | null,
+    prevState: RegisterState | undefined | void,
+    formData: FormData,
   ) => Promise<RegisterState | void>;
   initialState: RegisterState;
 };

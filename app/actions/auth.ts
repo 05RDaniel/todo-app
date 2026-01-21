@@ -284,7 +284,6 @@ export async function deleteAccountAction(
 
   // Delete user and all their tasks
   await prisma.task.deleteMany({
-    // @ts-expect-error - Prisma types may be out of sync, but userId exists in schema
     where: { userId: user.id },
   });
 
