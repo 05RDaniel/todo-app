@@ -101,7 +101,30 @@ Las migraciones de Prisma están en `prisma/migrations/`.
 
 ## 🚀 Despliegue
 
-Para desplegar en producción:
+### Desplegar en Vercel
+
+1. **Conecta tu repositorio** a Vercel desde el dashboard
+
+2. **Configura las variables de entorno** en Vercel:
+   - Ve a tu proyecto en Vercel → Settings → Environment Variables
+   - Añade la variable `DATABASE_URL` con tu conexión a PostgreSQL
+   - Ejemplo: `postgresql://usuario:password@host:5432/database`
+
+3. **Configura el Build Command** (si es necesario):
+   - Vercel detectará automáticamente Next.js
+   - El comando `postinstall` en `package.json` ejecutará `prisma generate` automáticamente
+
+4. **Ejecuta las migraciones** después del primer despliegue:
+   ```bash
+   npx prisma migrate deploy
+   ```
+   O usa el comando desde Vercel CLI:
+   ```bash
+   vercel env pull .env.local
+   npx prisma migrate deploy
+   ```
+
+### Despliegue manual
 
 1. Construye la aplicación:
 ```bash
@@ -119,6 +142,12 @@ npx prisma migrate deploy
 ```bash
 npm start
 ```
+
+### ⚠️ Importante
+
+- **DATABASE_URL es obligatoria**: La aplicación fallará si no está configurada
+- Asegúrate de que tu base de datos PostgreSQL esté accesible desde Vercel
+- Para bases de datos locales, considera usar un servicio como Railway, Supabase, o Neon
 
 ## 📄 Licencia
 
