@@ -7,6 +7,7 @@ async function registerWithState(
   prevState: RegisterState | undefined | void,
   formData: FormData,
 ): Promise<RegisterState | void> {
+  "use server";
   const safePrevState = prevState ?? initialState;
   return registerAction(safePrevState, formData);
 }

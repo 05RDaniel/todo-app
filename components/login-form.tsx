@@ -8,6 +8,7 @@ async function loginWithState(
   prevState: LoginState | undefined | void,
   formData: FormData,
 ): Promise<LoginState | void> {
+  "use server";
   // Normalizamos el estado previo a un LoginState válido
   const safePrevState = prevState ?? initialState;
   return loginAction(safePrevState, formData);
