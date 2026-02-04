@@ -2,6 +2,13 @@
 
 **Todo-app** — A modern, full-stack task management application with user accounts and subtasks.
 
+## Highlights
+
+- Full-stack task manager with user accounts, subtasks, priorities, and due dates.
+- Next.js 16 (App Router), TypeScript, PostgreSQL, and Prisma in a single codebase.
+- Session-based authentication with bcrypt; profile and account management.
+- Ready for self-hosting or deployment (e.g. Vercel + managed PostgreSQL).
+
 ---
 
 ## Project Overview
@@ -240,4 +247,4 @@ Vercel (Next.js native support). Alternatively any Node host that runs `next sta
 
 ## License
 
-This project is private. No license granted for reuse or distribution without permission.
+All rights reserved.
